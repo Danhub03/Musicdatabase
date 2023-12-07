@@ -1,0 +1,46 @@
+/* Placera er stilmall här */
+.album{
+    display: inline-block;
+    /*align-items:start;
+    justify-content: space-around;
+     flex-direction: column; */
+}
+
+.changebutton {
+    background-color: green;
+    color: black;
+    border-radius: 5px;
+    border: none;
+    width: 4vw;
+    height: 2.5vh;
+    display: block;
+    margin-bottom: 2%;
+}
+
+.btnbox{
+    gap: 10px;
+}
+
+.edit-album {
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    width: 30vw;
+    justify-content: space-between;
+    padding-left: 20px;
+    text-align: left;
+    gap: 5px;
+
+}
+
+.edit-album > input {
+    width: 15vw;
+}
+
+.edit-album > select {
+    width: 15vw;
+}
+
+

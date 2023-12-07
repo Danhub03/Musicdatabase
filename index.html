@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+    <head>
+        <title>React-starter-kit</title>
+        <meta charset="utf-8">
+        <script src="js/react.min.js"></script>
+        <script src="js/react-dom.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <!-- Rot-elementet för vår React-applikation -->
+        <div id="root"></div>
+        
+        <!--
+            Inkludera vår data (musikalbums),
+            denna kommer vara sparad i variabeln "albums".
+        -->
+        <script src="js/albums.js"></script>
+        <script type="text/babel">
+            // Ta en titt i webbkonsollen på den data vi har att tillgå 
+            console.log(albums);
+
+            // Placera din JavaScript här
+            // ...
+    
+    
+    var Album = React.createClass({
+    getInitialState: function() {
+        return {
+            isEditing: false
+        };
+    },
+    handleEditClick: function() {
+        // Byt till redigeringsläge
+        this.setState({ isEditing: true });
+    },
+    handleCancelEdit: function() {
+        // Avbryt redigering och återgå till visningsläge
+        this.setState({ isEditing: false });
+    },
+    handleSaveEdit: function(updatedAlbum) {
+        // Uppdatera albumet och återgå till visningsläge
+        this.props.album.name = updatedAlbum.name;
+        this.props.album.year = updatedAlbum.year;
+        this.props.album.rating = updatedAlbum.rating;
+        this.props.album.language = updatedAlbum.language;
+        this.setState({ isEditing: false });
+    },
+    render: function() {
+        return (
+            <div className="album">
+                {this.state.isEditing ? (
+                    <EditAlbum
+                        album={this.props.album}
+                        onEdit={this.handleSaveEdit}
+                    />
+                ) : (
+                    <div>
+                        <h2>{this.props.album.name}</h2>
+                        <p>Year: {this.props.album.year}</p>
+                        <p>Rating: {this.props.album.rating}</p>
+                        <p>Language: {this.props.album.language}</p>
+                        <a href={this.props.album.href}>Spotify link</a>
+                        <br />
+                        <img src={this.props.album.image.url} alt="" />
+                        <br />
+                        <div className = "btnbox">
+                        <button className="changebutton" onClick={this.props.onClick} type="button">
+                            Remove
+                        </button>
+                        <button className="changebutton" onClick={this.handleEditClick} type="button">
+                            Edit
+                        </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    }
+});
+
+
+var EditAlbum = React.createClass({
+    getInitialState: function() {
+        return {
+            name: this.props.album.name,
+            year: this.props.album.year,
+            rating: this.props.album.rating,
+            language: this.props.album.language
+        };
+    },
+    handleInputChange: function(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    },
+    handleEdit: function() {
+        // Skicka den redigerade informationen till förälderkomponenten
+        this.props.onEdit({
+            name: this.state.name,
+            year: this.state.year,
+            rating: this.state.rating,
+            language: this.state.language
+        });
+    },
+    render: function() {
+        return (
+            <div className="edit-album">
+                <label htmlFor="musicname">Name:</label>
+                <input
+                    type="text"
+                    name="name"
+                    value={this.state.name}
+                    onChange={this.handleInputChange}
+                />
+                <label htmlFor="releaseyear">Year:</label>
+                <input
+                    type="text"
+                    name="year"
+                    value={this.state.year}
+                    onChange={this.handleInputChange}
+                />
+                <label htmlFor="rating">Rating:</label>
+                <select
+                    name="rating"
+                    value={this.state.rating}
+                    onChange={this.handleInputChange}
+                >
+                    <option value="Not recomended">Not recomended</option>
+                    <option value="1/10">1/10</option>
+                    <option value="2/10">2/10</option>
+                    <option value="3/10">3/10</option>
+                    <option value="4/10">4/10</option>
+                    <option value="5/10">5/10</option>
+                    <option value="6/10">6/10</option>
+                    <option value="7/10">7/10</option>
+                    <option value="8/10">8/10</option>
+                    <option value="9/10">9/10</option>
+                    <option value="10/10">10/10</option>
+
+
+                </select>
+                <label htmlFor="language">Language:</label>
+                <input
+                    type="text"
+                    name="language"
+                    value={this.state.language}
+                    onChange={this.handleInputChange}
+                />
+                <button onClick={this.handleEdit} type="button">Save</button>
+            </div>
+        );
+    }
+});
+
+
+
+var Albums = React.createClass({
+    getInitialState: function() {
+        // Notera att variabeln "albums" kommer från
+        // vår fil `js/albums.js`
+        return {
+            albums: albums
+        };
+    },
+    handleClick: function(index) {
+        // Radera ett album från listan
+        this.state.albums.splice(index, 1);
+        // Uppdatera tillståndet med albumen igen
+        this.setState({
+            albums: this.state.albums
+        });
+    },
+    render: function() {
+        // Om vi vill skicka med funktionen handleClick, som ska radera
+        // ett album från listan behöver vi dels ange `this` som det
+        // andra argumentet i vår "map" metod, samt ange 
+        // `this.handleClick.bind(this, index)` för att göra så att vår
+        // klick-metod har tillgång till vårt tillstånd samt index för
+        // vilket album som blev klickat - så vi vet vilket vi vill radera
+        return (
+            <div className="albums">
+                {this.state.albums.map(function(album, index) {
+                    return (
+                        <Album
+                            album={album}
+                            onClick={this.handleClick.bind(this, index)} />
+                    )
+                }, this)}
+            </div>
+        )
+    }
+});
+
+// Rendera vårt innehåll
+ReactDOM.render(
+
+    <Albums />,
+    document.getElementById("root")
+);
+
+
+
+        </script>
+    </body>
+</html>
