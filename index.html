@@ -9,21 +9,21 @@
         <link rel="stylesheet" href="css/styles.css" />
     </head>
     <body>
-        <!-- Rot-elementet för vår React-applikation -->
+        <!-- The root element of our React application -->
         <div id="root"></div>
         
         <!--
-            Inkludera vår data (musikalbums),
-            denna kommer vara sparad i variabeln "albums".
+            Include our data (music albums),
+            this will be saved in the variable "albums".
         -->
+        
         <script src="js/albums.js"></script>
         <script type="text/babel">
-            // Ta en titt i webbkonsollen på den data vi har att tillgå 
+            // To look in the web console at the data we have available            
             console.log(albums);
 
-            // Placera din JavaScript här
+            // Place your JavaScript here
             // ...
-    
     
     var Album = React.createClass({
     getInitialState: function() {
@@ -36,11 +36,11 @@
         this.setState({ isEditing: true });
     },
     handleCancelEdit: function() {
-        // Avbryt redigering och återgå till visningsläge
+        // Cancel editing and return to display mode
         this.setState({ isEditing: false });
     },
     handleSaveEdit: function(updatedAlbum) {
-        // Uppdatera albumet och återgå till visningsläge
+        // Update the album and return to view mode
         this.props.album.name = updatedAlbum.name;
         this.props.album.year = updatedAlbum.year;
         this.props.album.rating = updatedAlbum.rating;
@@ -94,7 +94,7 @@ var EditAlbum = React.createClass({
         this.setState({ [e.target.name]: e.target.value });
     },
     handleEdit: function() {
-        // Skicka den redigerade informationen till förälderkomponenten
+        // Sends the edited information to the parent component
         this.props.onEdit({
             name: this.state.name,
             year: this.state.year,
@@ -156,27 +156,27 @@ var EditAlbum = React.createClass({
 
 var Albums = React.createClass({
     getInitialState: function() {
-        // Notera att variabeln "albums" kommer från
-        // vår fil `js/albums.js`
+        // Note that the variable "albums" comes from
+        // our file `js/albums.js`
         return {
             albums: albums
         };
     },
     handleClick: function(index) {
-        // Radera ett album från listan
+        // Delete an album from the list
         this.state.albums.splice(index, 1);
-        // Uppdatera tillståndet med albumen igen
+        // Updates the state of the albums again
         this.setState({
             albums: this.state.albums
         });
     },
     render: function() {
-        // Om vi vill skicka med funktionen handleClick, som ska radera
-        // ett album från listan behöver vi dels ange `this` som det
-        // andra argumentet i vår "map" metod, samt ange 
-        // `this.handleClick.bind(this, index)` för att göra så att vår
-        // klick-metod har tillgång till vårt tillstånd samt index för
-        // vilket album som blev klickat - så vi vet vilket vi vill radera
+        // If we want to send with the function handleClick, which should delete
+        // an album from the list, we also need to specify `this` as it
+        // second argument to our "map" method, as well as set
+        // `this.handleClick.bind(this, index)` to make our
+        // click method has access to our state as well as index for
+        // which album was clicked - so we know which one we want to delete
         return (
             <div className="albums">
                 {this.state.albums.map(function(album, index) {
@@ -191,7 +191,8 @@ var Albums = React.createClass({
     }
 });
 
-// Rendera vårt innehåll
+            
+// Render our content
 ReactDOM.render(
 
     <Albums />,
