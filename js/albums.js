@@ -1,4 +1,4 @@
-// Vår data (musikalbums)
+// Our data (musicalbums)
 var albums = [
     {
         "id" : "5Dbax7G8SWrP9xyzkOvy2F",
